@@ -76,6 +76,11 @@ func todoRouter(todoFile string, l sync.Locker) http.HandlerFunc {
 }
 
 func getAllHandler(w http.ResponseWriter, r *http.Request, list *todo.List) {
+	q := r.URL.Query()
+	if _, ok := q["active"]; ok {
+		list.FilterCompleted()
+	}
+
 	resp := &todoResponse{
 		Results: *list,
 	}

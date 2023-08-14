@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -47,6 +48,12 @@ func setupAPI(t *testing.T) (string, func()) {
 		ts.Close()
 		os.Remove(tempTodoFile.Name())
 	}
+}
+
+// this function will discard the log output of the server when testing
+func TestMain(t *testing.M) {
+	log.SetOutput(io.Discard)
+	os.Exit(t.Run())
 }
 
 func TestGet(t *testing.T) {
